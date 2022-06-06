@@ -23,3 +23,15 @@ CREATE TABLE IF NOT EXISTS. CoffeeTag (
   FOREIGN KEY (CoffeeID) REFERENCES Coffee(CoffeeID),
   FOREIGN KEY (TagID) REFERENCES Tag(TagID)
 );
+
+CREATE TABLE IF NOT EXISTS. Unit (
+	UnitID int NOT NULL,
+	UnitName int NOT NULL, 
+	PRIMARY KEY(UnitID)
+);
+
+CREATE TABLE IF NOT EXISTS. Difficulty (
+	DifficultyID int NOT NULL,
+	DifficultyLevel varchar(250) NOT NULL,
+	PRIMARY KEY(DifficultyID)
+);
