@@ -1,60 +1,64 @@
-
 CREATE TABLE  Difficulty (
-	DifficultyID int NOT NULL,
-	DifficultyLevel varchar(250) NOT NULL,
+	DifficultyID INT NOT NULL,
+	DifficultyLevel VARCHAR(250) NOT NULL,
 	PRIMARY KEY(DifficultyID)
 );
+
 CREATE TABLE Recipe (
-	RecipeID int NOT NULL,
+	RecipeID INT NOT NULL,
+  DifficultyID INT NULL,
 	Name VARCHAR(150) NOT NULL,
 	Description VARCHAR(255),
 	Instructions VARCHAR(255),
 	PrepTime FLOAT,
-	Difficulty INT,
-	FOREIGN KEY (Difficulty) REFERENCES Difficulty(DifficultyID)
+  PRIMARY KEY(RecipeID),
+	FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID)
 );
 
 CREATE TABLE Coffee (
-  CoffeeID int  NOT NULL,
-  RecipeID int NOT NULL,
-  Name varchar(50) NOT NULL,
-  Description varchar(255),
-  Rating int,
+  CoffeeID INT  NOT NULL,
+  RecipeID INT NOT NULL,
+  Name VARCHAR(50) NOT NULL,
+  Description VARCHAR(255),
+  Rating INT,
   PRIMARY KEY (CoffeeID),
   FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID)
 );
 
 CREATE TABLE  Tag (
-  TagID int NOT NULL,
-  Name varchar(100) NOT NULL,
-  Description varchar(255),
+  TagID INT NOT NULL,
+  Name VARCHAR(100) NOT NULL,
+  Description VARCHAR(255),
   PRIMARY KEY(TagID)
 );
 
 CREATE TABLE  CoffeeTag (
-  CoffeeID int NOT NULL,
-  TagID int NOT NULL,
-  Value varchar(50) NOT NULL,
+  CoffeeID INT NOT NULL,
+  TagID INT NOT NULL,
+  Value VARCHAR(50) NOT NULL,
   CONSTRAINT PK_CoffeeTag PRIMARY KEY (CoffeeID,TagID),
   FOREIGN KEY (CoffeeID) REFERENCES Coffee(CoffeeID),
   FOREIGN KEY (TagID) REFERENCES Tag(TagID)
 );
 
 CREATE TABLE Unit (
-	UnitID int NOT NULL,
-	UnitName int NOT NULL, 
-	PRIMARY KEY(UnitID)
+  UnitID INT NOT NULL,
+  UnitName INT NOT NULL, 
+  PRIMARY KEY(UnitID)
 );
-
 
 CREATE TABLE Ingredient (
- IngredientID int NOT NULL ,
- Name VARCHAR(150) NOT NULL,
+  IngredientID INT NOT NULL,
+  Name VARCHAR(150) NOT NULL,
+  PRIMARY KEY (IngredientID)
 );
+
 CREATE TABLE RecipeIngredient (
-RecipeID INT  FOREIGN KEY REFERENCES Recipe(RecipeID),
-IngredientID INT FOREIGN KEY REFERENCES Ingredient(IngredientID),
-Quantity VARCHAR(120),
-UnitID int NOT NULL,
-PRIMARY KEY (IngredientID, RecipeID)
+  RecipeID INT NOT NULL,
+  IngredientID INT NOT NULL,
+  UnitID INT NOT NULL,
+  Quantity VARCHAR(120),
+  CONSTRAINT PK_RecipeIngredient PRIMARY KEY (RecipeID, IngredientID),
+  FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID),
+  FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
 );
