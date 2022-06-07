@@ -1,11 +1,3 @@
-USE master;
-GO
-
-CREATE DATABASE COFFEE_CONNOISSEUR_DB;
-GO
-
-USE COFFEE_CONNOISSEUR_DB;
-GO
 
 CREATE TABLE  Difficulty (
 	DifficultyID int NOT NULL,
@@ -66,4 +58,3 @@ Quantity VARCHAR(120),
 Unit INT REFERENCES Unit(UnitID),
 PRIMARY KEY (IngredientID, RecipeID)
 );
---IF NOT EXISTS. Tag
