@@ -5,7 +5,7 @@ CREATE TABLE  Difficulty (
 	PRIMARY KEY(DifficultyID)
 );
 CREATE TABLE Recipe (
-	RecipeID INT IDENTITY(1,1) PRIMARY KEY,
+	RecipeID int NOT NULL,
 	Name VARCHAR(150) NOT NULL,
 	Description VARCHAR(255),
 	Instructions VARCHAR(255),
@@ -15,7 +15,7 @@ CREATE TABLE Recipe (
 );
 
 CREATE TABLE Coffee (
-  CoffeeID int  IDENTITY(1,1)  NOT NULL,
+  CoffeeID int  NOT NULL,
   RecipeID int NOT NULL,
   Name varchar(50) NOT NULL,
   Description varchar(255),
@@ -48,13 +48,13 @@ CREATE TABLE Unit (
 
 
 CREATE TABLE Ingredient (
- IngredientID INT IDENTITY(1,1) PRIMARY KEY ,
+ IngredientID int NOT NULL ,
  Name VARCHAR(150) NOT NULL,
 );
 CREATE TABLE RecipeIngredient (
 RecipeID INT  FOREIGN KEY REFERENCES Recipe(RecipeID),
 IngredientID INT FOREIGN KEY REFERENCES Ingredient(IngredientID),
 Quantity VARCHAR(120),
-Unit INT REFERENCES Unit(UnitID),
+UnitID int NOT NULL,
 PRIMARY KEY (IngredientID, RecipeID)
 );
