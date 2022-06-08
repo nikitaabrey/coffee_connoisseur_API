@@ -2,8 +2,8 @@ app:
   datasource:
     main:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: 'jdbc:mysql://localhost:3306/sakila'
-      username: 'root'
+      jdbc-url: 'jdbc:mysql://localhost:3306/coffeecon'
+      username: 'admin'
       password: 'admin'
       pool-size: 30
 logging:
