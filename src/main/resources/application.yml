@@ -6,6 +6,23 @@ app:
       username: 'admin'
       password: 'admin'
       pool-size: 30
+  aws:
+    access_key: 'AKIA5RBAKQEHQXBIB6N3'
+    secret_key: 'AKIA5RBAKQEHQXBIB6N3'
+    region: 'us-east-1'
+    cognito:
+      clientId: '6gcp7350aqf93r75ncd3b57q34'
+      userPoolId: 'us-east-1_FKWar0dk4'
+      region: 'us-east-1'
+      connectionTimeout: 2000
+      readTimeout: 2000
+      jwk: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_FKWar0dk4/.well-known/jwks.json
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_FKWar0dk4
 logging:
   level:
     org:
