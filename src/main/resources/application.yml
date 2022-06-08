@@ -1,0 +1,20 @@
+app:
+  datasource:
+    main:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: 'jdbc:mysql://localhost:3306/sakila'
+      username: 'root'
+      password: 'admin'
+      pool-size: 30
+logging:
+  level:
+    org:
+      springframework: DEBUG
+    com:
+      example : DEBUG
+server:
+  ssl:
+    key-store: device.p12
+    key-store-password: coffeecon
+    key-store-type: pkcs12
+  port: 443
