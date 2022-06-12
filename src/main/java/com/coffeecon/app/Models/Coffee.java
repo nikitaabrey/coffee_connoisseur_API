@@ -4,20 +4,12 @@ import java.util.List;
 
 public class Coffee {
 
-    // coffee model
-
-
     private Recipe recipe;
-
     private int CoffeeID;
     private String Name;
     private String description;
     private int Rating;
-
-
-
     private List<String> tags;
-
 
     public Coffee() {
 
@@ -32,15 +24,12 @@ public class Coffee {
         this.tags = tags;
     }
 
-
-
     public Coffee(Recipe recipe, String name, String description, int rating) {
         this.recipe = recipe;
         this.Name = name;
         this.description = description;
         this.Rating = rating;
     }
-
 
     public Recipe getRecipe() {
         return recipe;

@@ -15,6 +15,14 @@ public interface ICoffeeRepository {
     public List<Coffee> getAll(String sort_key, String order);
 
     /**
+     * Get all coffees
+     * @param sort_key the key to be used when sorting ie rating/difficulty
+     * @param order the sort order ie ascending or descending
+     * @return list off all coffees
+     */
+    public List<Coffee> getAll();
+
+    /**
      * get a coffee by id
      * @param id the id of the coffee to get
      * @return the coffee
