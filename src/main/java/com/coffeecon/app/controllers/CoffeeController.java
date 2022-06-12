@@ -7,9 +7,10 @@ import com.coffeecon.app.Services.CoffeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -50,6 +51,17 @@ public class CoffeeController {
         return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
     }
 
+    @RequestMapping(value="/coffees", method = RequestMethod.GET)
+    public ResponseEntity<?> getCoffeeDifficulty(@RequestParam int level) {
+        List<Coffee> coffees = service.getCoffeeByDifficulty(level);
+        return new ResponseEntity<>(coffees, HttpStatus.OK);
+    }
+
+    @PutMapping(value="/coffees")
+    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
+        service.updateCoffeeRating(coffeeId, rating);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 
 

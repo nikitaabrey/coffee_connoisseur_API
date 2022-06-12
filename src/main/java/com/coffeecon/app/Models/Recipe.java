@@ -5,13 +5,9 @@ import java.util.List;
 public class Recipe {
     private int RecipeID;
     private String Name;
-
-
     private String instructions;
     private double PrepTime;
     private int Difficulty;
-
-
     private List<Ingredient> ingredients;
 
     public Recipe() {
@@ -27,14 +23,12 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-
-    public Recipe( String name, String instructions, double prepTime, int difficulty) {
+    public Recipe(String name, String instructions, double prepTime, int difficulty) {
         this.Name = name;
         this.instructions = instructions;
         this.PrepTime = prepTime;
         this.Difficulty = difficulty;
     }
-
 
     public int getRecipeID() {
         return RecipeID;
@@ -76,8 +70,6 @@ public class Recipe {
         Difficulty = difficulty;
     }
 
-
-
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
@@ -85,6 +77,4 @@ public class Recipe {
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
-
-
 }

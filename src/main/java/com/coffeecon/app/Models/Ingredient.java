@@ -6,31 +6,22 @@ public class Ingredient {
     private String Quantity;
     private String Unit;
 
-
-
-
     public Ingredient() {
 
     }
-
 
     public Ingredient(int IngredientID,String name, String quantity, String unit) {
         this.name = name;
         this.Quantity = quantity;
         this.Unit = unit;
         this.IngredientID = IngredientID;
-
     }
-
-
 
     public Ingredient(String name, String quantity, String unit) {
         this.name = name;
         this.Quantity = quantity;
         this.Unit = unit;
     }
-
-
 
     public int getIngredientID() {
         return IngredientID;
@@ -63,6 +54,4 @@ public class Ingredient {
     public void setUnit(String unit) {
         Unit = unit;
     }
-
-
 }

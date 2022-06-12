@@ -11,18 +11,16 @@ import java.util.List;
 @Repository
 public class CoffeeRepository implements ICoffeeRepository {
 
-
-    // IMPLEMENT database query logic here
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
+
+    // SELECT * FROM Recipe WHERE difficultyId = "";
 
     @Override
     public List<Coffee> getAll(String sort_key, String order) {
-
       return null;
-
     }
 
     @Override
@@ -47,6 +45,6 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public void updateRating(int coffeeId, int rating) {
-
+        
     }
 }

@@ -21,7 +21,6 @@ public interface ICoffeeRepository {
      */
     public Coffee getCoffeeById(int id);
 
-
     /**
      * get coffees with given tags
      * @param tags list of search tags
@@ -40,7 +39,6 @@ public interface ICoffeeRepository {
      */
     public List<Coffee> getByIngredients(List<String> ingredients, String sort_key, String order);
 
-
     /**
      * get all coffes of a certain difficulty
      * @param level
@@ -48,13 +46,10 @@ public interface ICoffeeRepository {
      */
     public List<Coffee> getByDifficulty(int level);
 
-
     /**
      * update a coffee rating
      * @param coffeeId the coffee to update
      * @param rating the rating values
      */
     public void updateRating(int coffeeId, int rating);
-
-
 }
