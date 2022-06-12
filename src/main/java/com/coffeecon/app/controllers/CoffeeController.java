@@ -1,9 +1,11 @@
 package com.coffeecon.app.controllers;
 
+
 import com.coffeecon.app.Models.Coffee;
 import com.coffeecon.app.Models.Ingredient;
 import com.coffeecon.app.Models.Recipe;
 import com.coffeecon.app.Services.CoffeeService;
+import com.coffeecon.app.Services.CoffeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  * This class will contain the endpoints for coffees
  */
 @RestController
 public class CoffeeController {
 
-
     @Autowired
-    private CoffeeService service;
+    private CoffeeServiceImpl service;
+
+    public CoffeeService _CoffeeService;
+
+    public CoffeeController(CoffeeService coffeeService){
+        this._CoffeeService = coffeeService;
+    }
 
     @RequestMapping(value="/example", method = RequestMethod.GET)
     public ResponseEntity<Coffee> test() {
@@ -49,6 +57,12 @@ public class CoffeeController {
   ;
         return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
     }
+
+//    @RequestMapping(value="/coffee/{id}", method = RequestMethod.GET)
+//    public ResponseEntity<Coffee> selectCoffeeById() {
+//        _CoffeeService.getCoffeeById(value)
+//
+//    }
 
 }
 

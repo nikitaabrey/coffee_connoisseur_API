@@ -4,12 +4,14 @@ CREATE TABLE  Difficulty (
 	PRIMARY KEY(DifficultyID)
 );
 
+--added auto increment to recipe table
+-- changed varchar to 3000 for instructions
 CREATE TABLE Recipe (
-	RecipeID INT NOT NULL,
+	RecipeID INT identity(1,1) NOT NULL,
   DifficultyID INT NULL,
 	Name VARCHAR(150) NOT NULL,
 	Description VARCHAR(255),
-	Instructions VARCHAR(255),
+	Instructions VARCHAR(3000),
 	PrepTime FLOAT,
   PRIMARY KEY(RecipeID),
 	FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID)
@@ -41,9 +43,10 @@ CREATE TABLE  CoffeeTag (
   FOREIGN KEY (TagID) REFERENCES Tag(TagID)
 );
 
+-- changed Unit name
 CREATE TABLE Unit (
   UnitID INT NOT NULL,
-  UnitName Varchar(50) NOT NULL, 
+  UnitName Varchar(50) NOT NULL,
   PRIMARY KEY(UnitID)
 );
 
@@ -250,7 +253,7 @@ INSERT INTO RecipeIngredient(RecipeID,IngredientID,Quantity,UnitID) VALUES
 ,(3,8,'30',2)
 ,(3,6,'300',2)
 ,(3,5,'30',2)
-,(3,7,'2',NULL)
+,(3,7,'2',NULL) -- we are inserting a null value into a non null field?
 ,(3,4,'100',2)
 ,(4,1,'65',7)
 ,(4,2,'250',2)
