@@ -1,17 +1,19 @@
 package com.coffeecon.app.Models;
 
 import java.util.List;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
 
+@Data
 public class Recipe {
 
-    private int RecipeID;
-    private String Name;
-    private String Instructions;
-    private String Description;
-    private double PrepTime;
-    private int Difficulty;
-
-
+    @Id
+    private int recipeId;
+    private String name;
+    private String instructions;
+    private String description;
+    private double prepTime;
+    private int difficulty;
     private List<Ingredient> ingredients;
 
     public Recipe() {
@@ -19,74 +21,72 @@ public class Recipe {
     }
 
     public Recipe(int recipeID, String name, String instructions, String description, double prepTime, int difficulty,List<Ingredient> ingredients) {
-        this.RecipeID = recipeID;
-        this.Name = name;
-        this.Instructions = instructions;
-        this.Description = description;
-        this.PrepTime = prepTime;
-        this.Difficulty = difficulty;
+        this.recipeId = recipeID;
+        this.name = name;
+        this.instructions = instructions;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.difficulty = difficulty;
         this.ingredients = ingredients;
     }
 
 
     public Recipe( String name, String instructions, String description, double prepTime, int difficulty) {
-        this.Name = name;
-        this.Instructions = instructions;
-        this.Description = description;
-        this.PrepTime = prepTime;
-        this.Difficulty = difficulty;
+        this.name = name;
+        this.instructions = instructions;
+        this.description = description;
+        this.prepTime = prepTime;
+        this.difficulty = difficulty;
     }
 
 
     public int getRecipeID() {
-        return RecipeID;
+        return this.recipeId;
     }
 
     public void setRecipeID(int recipeID) {
-        RecipeID = recipeID;
+        this.recipeId = recipeID;
     }
 
     public String getName() {
-        return Name;
+        return this.name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getInstructions() {
-        return Instructions;
+        return instructions;
     }
 
     public void setInstructions(String instructions) {
-        this.Instructions = instructions;
+        this.instructions = instructions;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        this.Description = description;
+        this.description = description;
     }
 
     public double getPrepTime() {
-        return PrepTime;
+        return this.prepTime;
     }
 
     public void setPrepTime(double prepTime) {
-        PrepTime = prepTime;
+        this.prepTime = prepTime;
     }
 
     public int getDifficulty() {
-        return Difficulty;
+        return difficulty;
     }
 
     public void setDifficulty(int difficulty) {
-        Difficulty = difficulty;
+        this.difficulty = difficulty;
     }
-
-
 
     public List<Ingredient> getIngredients() {
         return ingredients;

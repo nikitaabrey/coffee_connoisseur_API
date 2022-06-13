@@ -2,15 +2,19 @@ package com.coffeecon.app.Repositories;
 
 import com.coffeecon.app.Models.Coffee;
 import com.coffeecon.app.Models.Ingredient;
+import com.coffeecon.app.Models.Tag;
 
 import com.coffeecon.app.Mappers.CoffeeRowMapper;
 import com.coffeecon.app.Mappers.IngredientRowMapper;
+import com.coffeecon.app.Mappers.TagRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import javax.print.event.PrintJobListener;
 
 @Repository
 public class CoffeeRepository implements ICoffeeRepository { 
@@ -20,14 +24,25 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
+    private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
 
 
     @Override
     public List<Coffee> getAll() {
 
 
-        // List<Ingredient> ingredients = jdbcTemplate.query(GET_COFFEE_INGREDIENTS_QUERY,new IngredientRowMapper());
+        // L
         List<Coffee> coffees = jdbcTemplate.query(GET_COFFEES_QUERY, new CoffeeRowMapper());
+        for( int i = 0; i < coffees.size(); i++){
+            int coffeeId = coffees.get(i).getCoffeeID();
+
+            List<Tag> tags = jdbcTemplate.query(GET_COFFEE_TAGS_QUERY, new TagRowMapper(), new Object[] {coffeeId});
+            List<Ingredient> ingredients = jdbcTemplate.query(GET_COFFEE_INGREDIENTS_QUERY,new IngredientRowMapper(), new Object[] {coffeeId});
+
+            coffees.get(i).setTags(tags);
+            coffees.get(i).getRecipe().setIngredients(ingredients);
+            
+        }
         return coffees;
 
     }
