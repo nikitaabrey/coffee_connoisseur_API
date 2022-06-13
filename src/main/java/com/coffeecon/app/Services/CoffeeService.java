@@ -12,6 +12,10 @@ public class CoffeeService {
     @Autowired
     private CoffeeRepository repo;
 
+    public List<Coffee> getCoffees(){
+        return repo.getAll();
+    }
+
     public List<Coffee> getCoffeeByDifficulty(int level) {
         return repo.getByDifficulty(level);
     }

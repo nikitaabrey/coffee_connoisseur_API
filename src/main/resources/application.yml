@@ -2,7 +2,7 @@ app:
   datasource:
     main:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: 'jdbc:mysql://coffeecon.c0imlhcgm7rq.us-east-1.rds.amazonaws.com:3306/coffeecon'
+      jdbc-url: 'jdbc:mysql://coffeecon.cuptqaxjh10z.af-south-1.rds.amazonaws.com:3306/coffeecon'
       username: 'admin'
       password: 'coffeecon'
       pool-size: 30

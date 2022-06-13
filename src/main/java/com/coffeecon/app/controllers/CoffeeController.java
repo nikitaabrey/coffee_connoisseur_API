@@ -33,7 +33,7 @@ public class CoffeeController {
         Ingredient ingredient1 = new Ingredient(1,"milk","400","ml");
         Ingredient ingredient2 = new Ingredient(2,"sugar","2","tsp");
 
-        Recipe recipe = new Recipe(1,"Expresso","add milk and expresso with sugar",2.5,3,new ArrayList<Ingredient>() {
+        Recipe recipe = new Recipe(1,"Expresso","add milk and expresso with sugar","Stir well", 2.5,3,new ArrayList<Ingredient>() {
             {
                 add(ingredient1);
                 add(ingredient2);
@@ -46,9 +46,14 @@ public class CoffeeController {
         }};
 
         Coffee coffee = new Coffee(recipe,1,"expresso","this is an expresso",3, tags);
-
-  ;
         return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/coffee", method = RequestMethod.GET)
+    public ResponseEntity<?> getCoffees() {
+
+        List<Coffee> coffees = service.getCoffees();
+        return new ResponseEntity<>(coffees,HttpStatus.OK);
     }
 
     @RequestMapping(value="/coffees", method = RequestMethod.GET)
@@ -57,7 +62,7 @@ public class CoffeeController {
         return new ResponseEntity<>(coffees, HttpStatus.OK);
     }
 
-    @PutMapping(value="/coffees")
+    @PutMapping(value="/coffees/updateRating")
     public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
         service.updateCoffeeRating(coffeeId, rating);
         return new ResponseEntity<>(HttpStatus.OK);

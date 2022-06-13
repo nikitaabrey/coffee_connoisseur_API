@@ -12,7 +12,7 @@ public interface ICoffeeRepository {
      * @param order the sort order ie ascending or descending
      * @return list off all coffees
      */
-    public List<Coffee> getAll(String sort_key, String order);
+    public List<Coffee> getAll();
 
     /**
      * get a coffee by id

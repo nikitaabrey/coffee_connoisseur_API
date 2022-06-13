@@ -6,6 +6,7 @@ public class Recipe {
     private int RecipeID;
     private String Name;
     private String instructions;
+    private String Description;
     private double PrepTime;
     private int Difficulty;
     private List<Ingredient> ingredients;
@@ -14,18 +15,20 @@ public class Recipe {
 
     }
 
-    public Recipe(int recipeID, String name, String instructions, double prepTime, int difficulty,List<Ingredient> ingredients) {
+    public Recipe(int recipeID, String name, String instructions, String description, double prepTime, int difficulty,List<Ingredient> ingredients) {
         this.RecipeID = recipeID;
         this.Name = name;
         this.instructions = instructions;
+        this.Description = description;
         this.PrepTime = prepTime;
         this.Difficulty = difficulty;
         this.ingredients = ingredients;
     }
 
-    public Recipe(String name, String instructions, double prepTime, int difficulty) {
+    public Recipe(String name, String instructions, String description, double prepTime, int difficulty) {
         this.Name = name;
         this.instructions = instructions;
+        this.Description = description;
         this.PrepTime = prepTime;
         this.Difficulty = difficulty;
     }
@@ -52,6 +55,14 @@ public class Recipe {
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        this.Description = description;
     }
 
     public double getPrepTime() {
