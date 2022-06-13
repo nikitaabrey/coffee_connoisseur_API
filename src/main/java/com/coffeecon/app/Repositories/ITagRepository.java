@@ -11,7 +11,7 @@ public interface ITagRepository {
      * Create a tag
      * @param tag
      */
-    public int save(Tag tag);
+    public Tag save(Tag tag);
 
     /**
      * Get a Tag by id
@@ -30,7 +30,7 @@ public interface ITagRepository {
      * Update a tag
      * @param tag
      */
-    public int update(Tag tag);
+    public Tag update(Tag tag);
 
     /**
      * Update a tag

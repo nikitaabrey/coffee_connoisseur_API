@@ -15,8 +15,8 @@ public class TagService {
     @Autowired
     private TagRepository tagRepo;
 
-    public void createTag(Tag tag){
-        tagRepo.save(tag);
+    public Tag createTag(Tag newTag){
+        return tagRepo.save(newTag);
     }
 
     public List<Tag> getTags(){
@@ -32,8 +32,9 @@ public class TagService {
         return tag;
     }
 
-    public void updateTag(Tag tag){
-        tagRepo.update(tag);
+    public Tag updateTag(Tag tag, int id){
+        tag.setTagId(id);
+        return tagRepo.update(tag);
     }
 
     public void deleteTag(int id) {
