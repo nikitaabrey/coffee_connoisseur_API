@@ -64,8 +64,14 @@ CREATE TABLE RecipeIngredient (
 );
 
 
-
-
+CREATE TABLE CoffeeRating
+(
+    UserID VARCHAR(100) NOT NULL,
+    CoffeeID INT NOT NULL,
+    LastRating INT NOT NULL,
+    CONSTRAINT  PRIMARY KEY (CoffeeID,UserID ),
+    FOREIGN KEY (CoffeeID) REFERENCES Coffee (CoffeeID)
+);
 
 
 
