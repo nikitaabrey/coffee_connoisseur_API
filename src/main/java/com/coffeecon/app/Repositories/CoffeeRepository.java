@@ -39,10 +39,8 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public Coffee getCoffeeById(int id) {
-//        String queryById ="SELECT * FROM CoffeeRecipeView crv " +
-//                         "WHERE  CoffeeID = " + id;
-        Coffee coffees = jdbcTemplate.queryForObject(GET_SINGLE_COFFEE, new CoffeeRowMapper(), new Object[] {id});
-        return coffees;
+        Coffee coffee = jdbcTemplate.queryForObject(GET_SINGLE_COFFEE, new CoffeeRowMapper(), new Object[] {id});
+        return getTagsAndIngredients(coffee);
 
     }
 
@@ -58,6 +56,19 @@ public class CoffeeRepository implements ICoffeeRepository {
 
         }
         return coffees;
+    }
+
+    private Coffee getTagsAndIngredients (Coffee coffee) {
+        
+        int coffeeId = coffee.getCoffeeID();
+
+        List<Tag> tags = jdbcTemplate.query(GET_COFFEE_TAGS_QUERY, new TagRowMapper(), new Object[] {coffeeId});
+        List<Ingredient> ingredients = jdbcTemplate.query(GET_COFFEE_INGREDIENTS_QUERY,new IngredientRowMapper(), new Object[] {coffeeId});
+
+        coffee.setTags(tags);
+        coffee.getRecipe().setIngredients(ingredients);
+
+        return coffee;
     }
 
     @Override
