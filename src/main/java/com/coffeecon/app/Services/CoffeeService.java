@@ -23,4 +23,8 @@ public class CoffeeService {
     public void updateCoffeeRating(int coffeeId, int rating) {
         repo.updateRating(coffeeId, rating);
     }
+
+    public void newCoffeeRating(int coffeeId, int rating) {
+        repo.newRating(coffeeId, rating);
+    }
 }

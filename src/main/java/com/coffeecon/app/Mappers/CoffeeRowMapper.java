@@ -12,7 +12,6 @@ public class CoffeeRowMapper implements RowMapper<Coffee> {
 
 	@Override
 	public Coffee mapRow(ResultSet rs, int rowNum) throws SQLException {
-
 		Recipe recipe = new Recipe();
 		recipe.setRecipeID(rs.getInt("RecipeID"));
 		recipe.setName(rs.getString("Name"));

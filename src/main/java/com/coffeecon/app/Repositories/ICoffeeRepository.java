@@ -52,4 +52,11 @@ public interface ICoffeeRepository {
      * @param rating the rating values
      */
     public void updateRating(int coffeeId, int rating);
+
+    /**
+     * create a new coffee rating
+     * @param coffeeId the coffee to rate
+     * @param rating the rating value
+     */
+    public void newRating(int coffeeId, int rating);
 }

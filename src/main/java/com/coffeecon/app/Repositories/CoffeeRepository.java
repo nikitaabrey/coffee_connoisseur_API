@@ -5,7 +5,6 @@ import com.coffeecon.app.Mappers.CoffeeRowMapper;
 import com.coffeecon.app.Models.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,8 +19,11 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
     private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
     private final String GET_COFFEE_DIFFICULTIES = "SELECT Recipe.RecipeID, Recipe.Name, Recipe.Description, Recipe.Instructions, Recipe.PrepTime, Recipe.DifficultyId, Coffee.CoffeeID, Coffee.Name, Coffee.Description, Coffee.RecipeID, Coffee.Rating, Difficulty.Level FROM Recipe INNER JOIN Coffee ON Recipe.RecipeID = Coffee.RecipeID INNER JOIN Difficulty ON Recipe.DifficultyID = Difficulty.DifficultyID WHERE Difficulty.Level = ?";
-    private final String UPDATE_COFFEE_RATING = "UPDATE Coffee SET Rating = ? WHERE CoffeeID = ?";
-
+    private final String UPDATE_COFFEE_RATING = "UPDATE CoffeeRating SET LastRating = ? WHERE CoffeeID = ?";
+    private final String UPDATE_AVG_RATING = "UPDATE Coffee SET Rating = ? WHERE CoffeeID = ?";
+    private final String AVERAGE_RATING = "SELECT AVG(LastRating) AS rating FROM CoffeeRating WHERE CoffeeID = ?";
+    private final String NEW_RATING = "INSERT INTO CoffeeRating (UserID, CoffeeID, LastRating) VALUES ('?', ?, ?) ON DUPLICATE KEY UPDATE LastRating = ?";
+    
     @Override
     public List<Coffee> getAll() {
         List<Coffee> coffees = jdbcTemplate.query(GET_COFFEES_QUERY, new CoffeeRowMapper());
@@ -63,5 +65,12 @@ public class CoffeeRepository implements ICoffeeRepository {
     @Override
     public void updateRating(int coffeeId, int rating) {
         jdbcTemplate.update(UPDATE_COFFEE_RATING, rating, coffeeId);
+        int avgRating = jdbcTemplate.update(AVERAGE_RATING);
+        jdbcTemplate.update(UPDATE_AVG_RATING, avgRating, coffeeId);
+    }
+
+    @Override
+    public void newRating(int coffeeId, int rating) {
+        jdbcTemplate.update(NEW_RATING, userId, coffeeId, rating, rating);
     }
 }
