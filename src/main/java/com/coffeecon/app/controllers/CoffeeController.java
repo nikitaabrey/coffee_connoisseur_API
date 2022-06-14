@@ -7,9 +7,11 @@ import com.coffeecon.app.Models.Recipe;
 import com.coffeecon.app.Services.CoffeeService;
 import com.coffeecon.app.Services.CoffeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,8 @@ import java.util.List;
 @RestController
 public class CoffeeController {
 
-    @Autowired
-    private CoffeeServiceImpl service;
 
+    @Autowired
     public CoffeeService _CoffeeService;
 
     public CoffeeController(CoffeeService coffeeService){
@@ -58,11 +59,13 @@ public class CoffeeController {
         return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
     }
 
-//    @RequestMapping(value="/coffee/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<Coffee> selectCoffeeById() {
-//        _CoffeeService.getCoffeeById(value)
-//
-//    }
+    @RequestMapping(value="/coffee/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Coffee> selectCoffeeById(@PathVariable (value="id")Integer id){
+        Coffee coffee= _CoffeeService.getCoffeeById(id);
+
+        System.out.println("Received new query.New Coffee ="+coffee.toString());
+        return new ResponseEntity<Coffee>(HttpStatus.OK);
+    }
 
 }
 

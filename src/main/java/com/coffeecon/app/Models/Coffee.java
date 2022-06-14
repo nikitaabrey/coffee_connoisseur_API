@@ -3,19 +3,11 @@ package com.coffeecon.app.Models;
 import java.util.List;
 
 public class Coffee {
-
-    // coffee model
-
-
     private Recipe recipe;
-
     private int CoffeeID;
     private String Name;
     private String description;
     private int Rating;
-
-
-
     private List<String> tags;
 
 
@@ -90,5 +82,15 @@ public class Coffee {
         this.tags = tags;
     }
 
-
+    @Override
+    public String toString() {
+        return "Coffee{" +
+                "recipe=" + recipe +
+                ", CoffeeID=" + CoffeeID +
+                ", Name='" + Name + '\'' +
+                ", description='" + description + '\'' +
+                ", Rating=" + Rating +
+                ", tags=" + tags +
+                '}';
+    }
 }
