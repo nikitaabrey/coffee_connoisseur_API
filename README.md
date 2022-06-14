@@ -29,6 +29,7 @@ App Features:
 * Get a coffee based on ingredients that you have available
 * A recipe can be looked up and filtered based on difficulty
 * A user can update their rating of a coffee
+* A user can rate a coffee
 ```
 
 ### Built With
