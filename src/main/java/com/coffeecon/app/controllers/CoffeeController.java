@@ -27,6 +27,7 @@ import java.util.List;
 @RestController
 @Validated
 public class CoffeeController {
+
     @Autowired
     private CoffeeService coffeeService;
 
@@ -68,6 +69,14 @@ public class CoffeeController {
 //        coffeeService.newCoffeeRating(coffeeId, rating);
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+
+    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id")int id) {
+        Coffee coffee= coffeeService.getCoffeeById(id);
+        return new HttpSuccess.Builder<Coffee>(HttpStatus.OK)
+                .withBody(coffee).build();
+    }
+
 }
 
 

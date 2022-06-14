@@ -18,9 +18,6 @@ import java.util.Locale;
 @Repository
 public class CoffeeRepository implements ICoffeeRepository {
 
-
-    // IMPLEMENT database query logic here
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -42,7 +39,11 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public Coffee getCoffeeById(int id) {
-        return null;
+        String queryById ="SELECT * FROM CoffeeRecipeView crv " +
+                         "WHERE  CoffeeID = " + id;
+        List<Coffee> coffees = jdbcTemplate.query(queryById, new CoffeeRowMapper());
+        return getTagsAndIngredients(coffees).get(0);
+
     }
 
     private List<Coffee> getTagsAndIngredients (List<Coffee> coffees) {

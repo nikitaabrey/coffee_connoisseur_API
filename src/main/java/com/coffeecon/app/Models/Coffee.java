@@ -28,6 +28,8 @@ public class Coffee {
         // this.tags = tags;
     }
 
+
+
     public Coffee(Recipe recipe, String name, String description, int rating) {
         this.recipe = recipe;
         this.name = name;

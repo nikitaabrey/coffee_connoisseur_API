@@ -185,7 +185,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<Object> handleAuthenticationException(RuntimeException ex, WebRequest request) {
         return new HttpFailure.Builder(HttpStatus.UNAUTHORIZED)
-                .withMessage("Unauthorised")
+                .withMessage("Invalid jwt")
                 .build();
     }
 
