@@ -24,12 +24,20 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
     private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
-
+    
 
     @Override
     public List<Coffee> getAll() {
-
         List<Coffee> coffees = jdbcTemplate.query(GET_COFFEES_QUERY, new CoffeeRowMapper());
+        return getTagsAndIngredients(coffees);
+    }
+
+    @Override
+    public Coffee getCoffeeById(int id) {
+        return null;
+    }
+
+    private List<Coffee> getTagsAndIngredients (List<Coffee> coffees) {
         for( int i = 0; i < coffees.size(); i++){
             int coffeeId = coffees.get(i).getCoffeeID();
 
@@ -41,18 +49,12 @@ public class CoffeeRepository implements ICoffeeRepository {
 
         }
         return coffees;
-
-    }
-
-    @Override
-    public Coffee getCoffeeById(int id) {
-        return null;
     }
 
     @Override
     public List<Coffee> getByTags(List<String> tags, String sort_key, String order) {
         String queryByTags = "SELECT c.CoffeeID, c.Name, c.Description, c.Rating, r.RecipeID, r.Name AS RecipeName," +
-                "r.Description AS RecipeDescription, r.Instructions, r.PrepTime, d.`Level` AS Difficulty\n" +
+                "r.Description AS RecipeDescription, r.Instructions, r.PrepTime, d.`Level` AS Difficulty FROM Coffee c\n" +
                 "INNER JOIN CoffeeTag ct ON  c.CoffeeID= ct.CoffeeID\n" +
                 "INNER JOIN Tag t ON ct.TagID = t.TagID \n" +
                 "INNER JOIN Recipe r USING  (RecipeID)\n" +
@@ -65,13 +67,14 @@ public class CoffeeRepository implements ICoffeeRepository {
             else
             queryByTags +=  "'"+tags.get(i).toUpperCase(Locale.ROOT) +"', " ;
         }
-        return querySortedResults(queryByTags, sort_key, order);
+        List<Coffee> coffees= querySortedResults(queryByTags, sort_key, order);
+        return getTagsAndIngredients(coffees);
     }
 
     @Override
     public List<Coffee> getByIngredients(List<String> ingredients, String sort_key, String order) {
         String querybyIngredients = "SELECT c.CoffeeID, c.Name, c.Description, c.Rating, r.RecipeID, r.Name AS RecipeName, " +
-                "r.Description AS RecipeDescription, r.Instructions, r.PrepTime, d.`Level` AS Difficulty\n c\n" +
+                "r.Description AS RecipeDescription, r.Instructions, r.PrepTime, d.`Level` AS Difficulty FROM Coffee c\n" +
                 "INNER JOIN Recipe r USING (RecipeID)\n" +
                 "INNER JOIN RecipeIngredient ri USING (RecipeID)\n" +
                 "INNER JOIN Ingredient i USING (IngredientID)\n" +
@@ -85,10 +88,12 @@ public class CoffeeRepository implements ICoffeeRepository {
             querybyIngredients +=  "'"+ingredients.get(i).toUpperCase(Locale.ROOT) +"', " ;
 
         }
-       return querySortedResults(querybyIngredients, sort_key, order);
+
+        List<Coffee> coffees= querySortedResults(querybyIngredients, sort_key, order);
+        return getTagsAndIngredients(coffees);
     }
 
-    public List<Coffee> querySortedResults (String query, String sort_key, String order)
+    private List<Coffee> querySortedResults (String query, String sort_key, String order)
     {
         switch (sort_key) {
             case "rating":
