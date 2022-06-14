@@ -35,7 +35,7 @@ public class CoffeeController {
     private CoffeeService coffeeService;
 
     @RequestMapping (value="",method = RequestMethod.GET)
-    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String  tags,
+    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String tags,
                                                                   @RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String ingredients ,
                                                                   @RequestParam (defaultValue="none")  @Pattern(regexp = "^(difficulty|rating|none)$") String sort_key ,
                                                                   @RequestParam (defaultValue="none") @Pattern(regexp = "^(desc|asc|none)$") String order,
@@ -62,25 +62,25 @@ public class CoffeeController {
     }
 
     @PutMapping(value="")
-//    public ResponseEntity<?> updateCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]*$") int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
-    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
-        coffeeService.updateCoffeeRating(coffeeId, rating);
+    public ResponseEntity<?> updateCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
+//    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
+        coffeeService.updateCoffeeRating(Integer.parseInt(coffeeId), Integer.parseInt(rating));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value="")
-    public ResponseEntity<?> newCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
+    public ResponseEntity<?> newCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
 //    public ResponseEntity<?> newCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
         JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         String username = JwtUtils.getUser(token);
-        coffeeService.newCoffeeRating(username,coffeeId, rating);
-        return new ResponseEntity<>(HttpStatus.OK);
+        coffeeService.newCoffeeRating(username,Integer.parseInt(coffeeId), Integer.parseInt(rating));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id") int id) {
+    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id") String id) {
         System.out.println("ID--------------------------------" + id);
-        Coffee coffee= coffeeService.getCoffeeById(id);
+        Coffee coffee= coffeeService.getCoffeeById(Integer.parseInt(id));
         return new HttpSuccess.Builder<Coffee>(HttpStatus.OK)
                 .withBody(coffee).build();
     }
