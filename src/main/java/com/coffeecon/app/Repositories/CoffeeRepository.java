@@ -27,7 +27,7 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
     private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
-    private final String GET_COFFEE_DIFFICULTIES = "SELECT Recipe.RecipeID, Recipe.Name, Recipe.Description, Recipe.Instructions, Recipe.PrepTime, Recipe.DifficultyId, Coffee.CoffeeID, Coffee.Name, Coffee.Description, Coffee.RecipeID, Coffee.Rating, Difficulty.Level FROM Recipe INNER JOIN Coffee ON Recipe.RecipeID = Coffee.RecipeID INNER JOIN Difficulty ON Recipe.DifficultyID = Difficulty.DifficultyID WHERE Difficulty.Level = ?";
+    private final String GET_COFFEE_DIFFICULTIES = "SELECT Recipe.RecipeID, Recipe.Name as RecipeName, Recipe.Description AS RecipeDescription, Recipe.Instructions, Recipe.PrepTime, Recipe.DifficultyId, Coffee.CoffeeID, Coffee.Name, Coffee.Description, Coffee.RecipeID, Coffee.Rating, Difficulty.Level AS Difficulty FROM Recipe INNER JOIN Coffee ON Recipe.RecipeID = Coffee.RecipeID INNER JOIN Difficulty ON Recipe.DifficultyID = Difficulty.DifficultyID WHERE Difficulty.Level = ?";
     private final String UPDATE_COFFEE_RATING = "UPDATE CoffeeRating SET LastRating = ? WHERE CoffeeID = ?";
     private final String UPDATE_AVG_RATING = "UPDATE Coffee SET Rating = ? WHERE CoffeeID = ?";
     private final String AVERAGE_RATING = "SELECT AVG(LastRating) AS rating FROM CoffeeRating WHERE CoffeeID = ?";
@@ -145,8 +145,8 @@ public class CoffeeRepository implements ICoffeeRepository {
         jdbcTemplate.update(UPDATE_AVG_RATING, avgRating, coffeeId);
     }
 
-    @Override
-    public void newRating(int coffeeId, int rating) {
-        jdbcTemplate.update(NEW_RATING, userId, coffeeId, rating, rating);
-    }
+//    @Override
+//    public void newRating(int coffeeId, int rating) {
+//        jdbcTemplate.update(NEW_RATING, userId, coffeeId, rating, rating);
+//    }
 }

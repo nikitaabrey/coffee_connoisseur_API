@@ -15,14 +15,6 @@ public interface ICoffeeRepository {
     public List<Coffee> getAll();
 
     /**
-     * Get all coffees
-     * @param sort_key the key to be used when sorting ie rating/difficulty
-     * @param order the sort order ie ascending or descending
-     * @return list off all coffees
-     */
-    public List<Coffee> getAll();
-
-    /**
      * get a coffee by id
      * @param id the id of the coffee to get
      * @return the coffee
@@ -66,5 +58,5 @@ public interface ICoffeeRepository {
      * @param coffeeId the coffee to rate
      * @param rating the rating value
      */
-    public void newRating(int coffeeId, int rating);
+//    public void newRating(int coffeeId, int rating);
 }
