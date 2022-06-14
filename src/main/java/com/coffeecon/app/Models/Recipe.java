@@ -1,13 +1,9 @@
 package com.coffeecon.app.Models;
 
 import java.util.List;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
 
-@Data
 public class Recipe {
 
-    @Id
     private int recipeId;
     private String name;
     private String instructions;

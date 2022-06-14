@@ -1,12 +1,7 @@
 package com.coffeecon.app.Models;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-
-@Data
 public class Tag {
     
-    @Id
     private int tagId;
     private String name;
     private String description;
