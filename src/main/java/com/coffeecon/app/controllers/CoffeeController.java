@@ -27,7 +27,6 @@ import java.util.List;
 @RestController
 public class CoffeeController {
 
-
     @Autowired
     public CoffeeService _CoffeeService;
 
@@ -59,12 +58,12 @@ public class CoffeeController {
         return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/coffee/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Coffee> selectCoffeeById(@PathVariable (value="id")Integer id){
+    @RequestMapping(value="/coffees/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Coffee> selectCoffeeById(@PathVariable(required = true,value = "id")  Integer id){
         Coffee coffee= _CoffeeService.getCoffeeById(id);
 
         System.out.println("Received new query.New Coffee ="+coffee.toString());
-        return new ResponseEntity<Coffee>(HttpStatus.OK);
+        return new ResponseEntity<Coffee>(coffee,HttpStatus.OK);
     }
 
 }
