@@ -432,4 +432,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 }).collect(Collectors.toList()))
                 .build();
     }
+
+
+    /**
+     * Tag Id not found
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(TagNotFoundException.class)
+    protected  ResponseEntity<Object> handleTagNotFound(TagNotFoundException ex) {
+        return new HttpFailure.Builder(HttpStatus.NOT_FOUND)
+                .withMessage(ex.getMessage())
+                .build();
+    }
 }
