@@ -43,9 +43,10 @@ public class CoffeeController {
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Coffee> selectCoffeeById(@PathVariable (value="id")int id) {
+    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id")int id) {
         Coffee coffee= coffeeService.getCoffeeById(id);
-        return new ResponseEntity<Coffee>(HttpStatus.OK);
+        return new HttpSuccess.Builder<Coffee>(HttpStatus.OK)
+                .withBody(coffee).build();
     }
 
 }

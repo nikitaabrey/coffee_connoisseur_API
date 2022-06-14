@@ -81,15 +81,4 @@ public class Coffee {
         this.tags = tags;
     }
 
-    @Override
-    public String toString() {
-        return "Coffee{" +
-                "recipe=" + recipe +
-                ", CoffeeID=" + CoffeeID +
-                ", Name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", Rating=" + rating +
-                ", tags=" + tags +
-                '}';
-    }
 }

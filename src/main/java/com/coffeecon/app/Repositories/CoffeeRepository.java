@@ -24,7 +24,6 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
     private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
-    
 
     @Override
     public List<Coffee> getAll() {
@@ -34,7 +33,7 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public Coffee getCoffeeById(int id) {
-        String queryById ="SELECT * FROM CoffeeRecipeView crv" +
+        String queryById ="SELECT * FROM CoffeeRecipeView crv " +
                          "WHERE  CoffeeID = " + id;
         List<Coffee> coffees = jdbcTemplate.query(queryById, new CoffeeRowMapper());
         return getTagsAndIngredients(coffees).get(0);

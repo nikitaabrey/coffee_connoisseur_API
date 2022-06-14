@@ -21,7 +21,7 @@ public class CognitoUserService {
 
     @Autowired
     private AWSCognitoIdentityProvider cognitoClient;
-    
+
 
     public CognitoAuthToken authenticate(LoginRequestDTO login_req) {
 
