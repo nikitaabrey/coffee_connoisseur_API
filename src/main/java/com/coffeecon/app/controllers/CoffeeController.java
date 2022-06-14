@@ -31,8 +31,8 @@ public class CoffeeController {
     private CoffeeService coffeeService;
 
     @RequestMapping (value="",method = RequestMethod.GET)
-    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "[a-zA-Z]+'?[a-zA-Z]+") String  tags,
-                                                                  @RequestParam (defaultValue="none") @Pattern(regexp = "[a-zA-Z]+'?[a-zA-Z]+") String ingredients ,
+    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String  tags,
+                                                                  @RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String ingredients ,
                                                                   @RequestParam (defaultValue="none")  @Pattern(regexp = "^(difficulty|rating|none)$") String sort_key ,
                                                                   @RequestParam (defaultValue="none") @Pattern(regexp = "^(desc|asc|none)$") String order,
                                                                   @RequestParam (defaultValue = "none") @Pattern(regexp = "^(1|2|3|4|5|none)$") String level) {
