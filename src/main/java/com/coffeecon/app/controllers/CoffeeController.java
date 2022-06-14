@@ -5,6 +5,8 @@ import com.coffeecon.app.Models.Coffee;
 import com.coffeecon.app.Models.HttpResponseModels.HttpSuccess;
 import com.coffeecon.app.Services.CoffeeService;
 import com.coffeecon.app.Utilities.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -37,6 +39,7 @@ public class CoffeeController {
     private CoffeeModelAssembler coffeeAssembler;
 
     @GetMapping()
+    @Operation(summary = "Get coffees by tags or ingredients, with option to sort and filter", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String tags,
                                                                   @RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String ingredients ,
                                                                   @RequestParam (defaultValue="none")  @Pattern(regexp = "^(difficulty|rating|none)$") String sort_key ,
@@ -70,6 +73,7 @@ public class CoffeeController {
     }
 
     @PutMapping()
+    @Operation(summary = "Update a coffee rating", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> updateCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
 
         coffeeService.updateCoffeeRating(Integer.parseInt(coffeeId), Integer.parseInt(rating));
@@ -77,6 +81,7 @@ public class CoffeeController {
     }
 
     @PostMapping()
+    @Operation(summary = "add a new coffee rating", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<?> newCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
 
         JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +90,7 @@ public class CoffeeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") @Operation(summary = "Get a single coffee by id", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id") Integer id) {
         
         Coffee coffee = coffeeService.getCoffeeById(id);

@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -29,6 +32,7 @@ public class TagController {
 
 
     @PostMapping()
+    @Operation(summary = "Create a new tag", security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<Object> newTag(@RequestBody Tag tag) {
 
         EntityModel<Tag> entityModel = tagAssembler.toModel(tagService.createTag(tag));
@@ -39,6 +43,7 @@ public class TagController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a tag by id", security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<Object> getTagById(@PathVariable("id") Integer id) {
 
         Tag tag = tagService.getTagById(id);
@@ -48,6 +53,7 @@ public class TagController {
 	}
 
     @GetMapping()
+    @Operation(summary = "Get all tags", security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<Object>  getTags() {
 
 		List<EntityModel<Tag>> tags = tagService.getTags().stream()
@@ -62,6 +68,7 @@ public class TagController {
 
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a tag", security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<Object> updateTag(@RequestBody Tag newTag, @PathVariable int id) {
 
         EntityModel<Tag> entityModel = tagAssembler.toModel(tagService.updateTag(newTag, id));
@@ -72,6 +79,7 @@ public class TagController {
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a tag", security = @SecurityRequirement(name = "bearerAuth"))
 	public ResponseEntity<Object> deleteTag(@PathVariable("id") Integer id) {
 
 		tagService.deleteTag(id);
