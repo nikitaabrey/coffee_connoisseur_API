@@ -1,8 +1,7 @@
 package com.coffeecon.app.controllers;
 
 import com.coffeecon.app.Models.Coffee;
-import com.coffeecon.app.Models.Ingredient;
-import com.coffeecon.app.Models.Recipe;
+import com.coffeecon.app.Models.HttpResponseModels.HttpSuccess;
 import com.coffeecon.app.Services.CoffeeService;
 import com.coffeecon.app.Utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,31 +28,15 @@ public class CoffeeController {
 
 
     @Autowired
-    private CoffeeService service;
+    private CoffeeService coffeeService;
 
-    @RequestMapping(value="/example", method = RequestMethod.GET)
-    public ResponseEntity<Coffee> test() {
+    @RequestMapping(value="/coffees", method = RequestMethod.GET)
+    public ResponseEntity<Object> getCoffees() {
 
+        List<Coffee> coffees = coffeeService.getCoffees();
+        return new HttpSuccess.Builder<List<Coffee>>(HttpStatus.OK)
+                .withBody(coffees).build();
 
-        Ingredient ingredient1 = new Ingredient(1,"milk","400","ml");
-        Ingredient ingredient2 = new Ingredient(2,"sugar","2","tsp");
-
-        Recipe recipe = new Recipe(1,"Expresso","add milk and expresso with sugar",2.5,3,new ArrayList<Ingredient>() {
-            {
-                add(ingredient1);
-                add(ingredient2);
-            }
-        });
-
-        List<String> tags = new ArrayList<String>() {{
-            add("dark roast");
-            add("floral");
-        }};
-
-        Coffee coffee = new Coffee(recipe,1,"expresso","this is an expresso",3, tags);
-
-  ;
-        return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
     }
 
 }
