@@ -58,5 +58,5 @@ public interface ICoffeeRepository {
      * @param coffeeId the coffee to rate
      * @param rating the rating value
      */
-//    public void newRating(int coffeeId, int rating);
+    public void newRating(String userId, int coffeeId, int rating);
 }

@@ -43,7 +43,7 @@ public class CoffeeService {
         repo.updateRating(coffeeId, rating);
     }
 
-//    public void newCoffeeRating(int coffeeId, int rating) {
-//        repo.newRating(coffeeId, rating);
-//    }
+    public void newCoffeeRating(String username, int coffeeId, int rating) {
+        repo.newRating(username, coffeeId, rating);
+    }
 }

@@ -5,10 +5,13 @@ import com.coffeecon.app.Models.HttpResponseModels.HttpSuccess;
 import com.coffeecon.app.Models.Ingredient;
 import com.coffeecon.app.Models.Recipe;
 import com.coffeecon.app.Services.CoffeeService;
+import com.coffeecon.app.Utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,19 +62,24 @@ public class CoffeeController {
     }
 
     @PutMapping(value="")
-    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
+//    public ResponseEntity<?> updateCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]*$") int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
+    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
         coffeeService.updateCoffeeRating(coffeeId, rating);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @PostMapping(value="")
+    @PostMapping(value="")
+    public ResponseEntity<?> newCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
 //    public ResponseEntity<?> newCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
-//        coffeeService.newCoffeeRating(coffeeId, rating);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+        JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String username = JwtUtils.getUser(token);
+        coffeeService.newCoffeeRating(username,coffeeId, rating);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id")int id) {
+    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id") int id) {
+        System.out.println("ID--------------------------------" + id);
         Coffee coffee= coffeeService.getCoffeeById(id);
         return new HttpSuccess.Builder<Coffee>(HttpStatus.OK)
                 .withBody(coffee).build();
