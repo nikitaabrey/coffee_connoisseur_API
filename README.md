@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <img src="" alt="Logo" width="250" height="250">
+  <img src="logo.jpg" alt="Logo" width="250" height="250">
 
 <h3 align="center">Coffee Connoisseur API</h3>
 
@@ -16,25 +16,43 @@
 Essentially an app where ...
 The reason for an app like this is to be able to say:
 
-_“...”_
+_“I want to make a coffee let me find a recipe to help make my next coffee.”_
 
 ```
 App Features: 
-* ...
+* A new user can be registered
+* A user can login
+* A user can is confirmed
+* All coffees can be viewed
+* A single coffee can be looked up
+* Get a coffee based on tags
+* Get a coffee based on ingredients that you have available
+* A recipe can be looked up and filtered based on difficulty
+* A user can update their rating of a coffee
 ```
 
 ### Built With
 
-* ...
+* Java Spring
+* MySQL
+* AWS Cloud Formation
+* AWS Cognito
 
 <!-- ERD UPLOAD -->
 ### Entity Relational Diagram
- <img src="" alt="ERD" width="1000" height="500">
+ <img src="ERD.jpg" alt="ERD" width="1000" height="500">
 
  <!-- API ENDPOINTS-->
  ### API Endpoints
  ```
- *...
+ * /coffee?sort-by={value} value=rating, difficulty
+ * /coffees?tags={tag}&sort-by={value} value=rating, difficulty
+ * /coffees?ingredients={ingredient}&sort-by={value}
+ * /coffees?difficulty={difficulty}
+ * /coffees/updateRating/{rating}
+ * /coffees/{id}
+ * /register
+ * /login
  ```
  
 <!-- MEET THE TEAM -->
@@ -50,5 +68,8 @@ App Features:
 <!-- REFERENCES -->
 ## References
 
+* [AWS Documentation](https://docs.aws.amazon.com/)
+* [MySQL Documentation](https://dev.mysql.com/doc/)
+* [Java Spring Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/)
 * [The Hive](https://the-hive.bbd.co.za/)
 * [Pluralsight](https://app.pluralsight.com/)
