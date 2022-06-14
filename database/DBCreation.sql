@@ -43,7 +43,7 @@ CREATE TABLE  CoffeeTag (
 
 CREATE TABLE Unit (
   UnitID INT NOT NULL,
-  Name VARCHAR(10) NOT NULL, 
+  Name VARCHAR(10) NOT NULL,
   PRIMARY KEY(UnitID)
 );
 
@@ -61,4 +61,13 @@ CREATE TABLE RecipeIngredient (
   CONSTRAINT PK_RecipeIngredient PRIMARY KEY (RecipeID, IngredientID),
   FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID),
   FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
+);
+
+CREATE TABLE CoffeeRating
+(
+    UserID VARCHAR(100) NOT NULL,
+    CoffeeID INT NOT NULL,
+    LastRating INT NOT NULL,
+    CONSTRAINT  PRIMARY KEY (CoffeeID,UserID ),
+    FOREIGN KEY (CoffeeID) REFERENCES Coffee (CoffeeID)
 );
