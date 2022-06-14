@@ -55,6 +55,45 @@ App Features:
  * /login
  ```
  
+<!-- GETTING STARTED -->
+## Getting Started
+
+If you wish to test out the code and run the DB instance, please follow the instructions below
+
+### Prerequisites
+
+* Cloud Formation Stack Endpoint
+
+  _If you wish to run on a cloud service_
+  
+  _e.g. [AWS](https://bbd-internal-sso.awsapps.com/start#)_
+
+* Application To Run Endpoint
+  - Visual Studio or,
+  - Command line on Windows.
+
+
+### Running the DB scripts
+
+1. Create DB: run the file to create DB and its tables
+```sh
+DBCreation.sql
+```
+
+### Running the API's
+
+#### Running the scripts in Windows command line:
+1. Open the project in File Explorer and run the following command in terminal:
+```sh
+mvn spring-boot:run
+```
+
+2. In a browser, navigate to 
+_https://localhost:port/desired_endpoint
+where _port_ is the randomly chosen port number (443) and _desired_endpoint_ is the endpoint that you would like to test on the API.
+
+3. Once the web API has been launched in your favourite web browser the API endpoints can be interacted with either through Postman or the Swagger interface.
+ 
 <!-- MEET THE TEAM -->
 ## Development Team
 
