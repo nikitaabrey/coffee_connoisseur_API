@@ -9,7 +9,7 @@ CREATE TABLE Recipe (
   DifficultyID INT NULL,
 	Name VARCHAR(150) NOT NULL,
 	Description VARCHAR(255),
-	Instructions VARCHAR(1200),
+	Instructions VARCHAR(3000),
 	PrepTime FLOAT,
   PRIMARY KEY(RecipeID),
 	FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID)

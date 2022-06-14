@@ -5,21 +5,30 @@ import com.amazonaws.services.xray.model.Http;
 import com.coffeecon.app.Models.HttpResponseModels.Error;
 import com.coffeecon.app.Models.HttpResponseModels.HttpFailure;
 import com.coffeecon.app.Models.HttpResponseModels.ValidationError;
+import org.springframework.beans.ConversionNotSupportedException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.www.NonceExpiredException;
 import org.springframework.util.MimeType;
+import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
@@ -28,12 +37,73 @@ import java.util.stream.Collectors;
 
 
 
+
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    @Override
+    protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                .withMessage("Internal server error")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                .withMessage("Internal server error")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                .withMessage("Internal server error")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
+        return new HttpFailure.Builder(HttpStatus.REQUEST_TIMEOUT)
+                .withMessage("Request timed out")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage("Request method not supported")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                .withMessage("Internal server error")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage("Media type not supported")
+                .build();
+    }
 
 
-    // error for all exceptioms
-    //
+    @Override
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage("Missing path variable")
+                .build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                .withMessage("Internal server error")
+                .build();
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -185,7 +255,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<Object> handleAuthenticationException(RuntimeException ex, WebRequest request) {
         return new HttpFailure.Builder(HttpStatus.UNAUTHORIZED)
-                .withMessage("Unauthorised")
+                .withMessage("Invalid jwt")
                 .build();
     }
 
@@ -293,6 +363,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()))
+                .build();
+    }
+
+
+
+    /**
+     * Handle Exception, handle generic Exception.class
+     *
+     * @param ex the Exception
+     * @return the ApiError object
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
+                                                                      WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage(String.format("The parameter '%s' could not be converted to type '%s'", ex.getName(), ex.getRequiredType().getSimpleName()))
+                .build();
+    }
+
+
+
+
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+       return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+               .withMessage("Internal server error")
+               .build();
+    }
 
     /**
      * missing servlet request

@@ -4,7 +4,11 @@ import java.util.List;
 
 public class Coffee {
 
+    // coffee model
+
+
     private Recipe recipe;
+
     private int CoffeeID;
     private String name;
     private String description;
@@ -23,6 +27,8 @@ public class Coffee {
         this.rating = rating;
         // this.tags = tags;
     }
+
+
 
     public Coffee(Recipe recipe, String name, String description, int rating) {
         this.recipe = recipe;

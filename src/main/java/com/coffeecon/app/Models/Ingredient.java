@@ -16,7 +16,6 @@ public class Ingredient {
         this.Quantity = quantity;
         this.Unit = unit;
         this.IngredientID = IngredientID;
-
     }
 
     public Ingredient(String name, String quantity, String unit) {
@@ -56,6 +55,4 @@ public class Ingredient {
     public void setUnit(String unit) {
         Unit = unit;
     }
-
-
 }

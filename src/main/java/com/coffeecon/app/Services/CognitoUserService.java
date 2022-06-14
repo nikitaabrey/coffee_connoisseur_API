@@ -23,7 +23,6 @@ public class CognitoUserService {
     private AWSCognitoIdentityProvider cognitoClient;
 
 
-
     public CognitoAuthToken authenticate(LoginRequestDTO login_req) {
 
         InitiateAuthRequest authRequest = new InitiateAuthRequest()
