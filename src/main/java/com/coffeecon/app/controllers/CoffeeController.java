@@ -2,8 +2,6 @@ package com.coffeecon.app.controllers;
 
 import com.coffeecon.app.Models.Coffee;
 import com.coffeecon.app.Models.HttpResponseModels.HttpSuccess;
-import com.coffeecon.app.Models.Ingredient;
-import com.coffeecon.app.Models.Recipe;
 import com.coffeecon.app.Services.CoffeeService;
 import com.coffeecon.app.Utilities.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +13,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
