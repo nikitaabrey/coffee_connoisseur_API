@@ -24,6 +24,12 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String GET_COFFEES_QUERY = "SELECT * FROM CoffeeRecipeView";
     private final String GET_COFFEE_INGREDIENTS_QUERY = "CALL GetCoffeeIngredients(?)";
     private final String GET_COFFEE_TAGS_QUERY = "CALL GetCoffeeTags(?)";
+    private final String GET_COFFEE_DIFFICULTIES = "SELECT Recipe.RecipeID, Recipe.Name as RecipeName, Recipe.Description AS RecipeDescription, Recipe.Instructions, Recipe.PrepTime, Recipe.DifficultyId, Coffee.CoffeeID, Coffee.Name, Coffee.Description, Coffee.RecipeID, Coffee.Rating, Difficulty.Level AS Difficulty FROM Recipe INNER JOIN Coffee ON Recipe.RecipeID = Coffee.RecipeID INNER JOIN Difficulty ON Recipe.DifficultyID = Difficulty.DifficultyID WHERE Difficulty.Level = ?";
+    private final String UPDATE_COFFEE_RATING = "UPDATE CoffeeRating SET LastRating = ? WHERE CoffeeID = ?";
+    private final String UPDATE_AVG_RATING = "UPDATE Coffee SET Rating = ? WHERE CoffeeID = ?";
+    private final String AVERAGE_RATING = "SELECT AVG(LastRating) AS rating FROM CoffeeRating WHERE CoffeeID = ?";
+    private final String NEW_RATING = "INSERT INTO CoffeeRating (UserID, CoffeeID, LastRating) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE LastRating = ?";
+    private final String GET_SINGLE_COFFEE = "SELECT * FROM CoffeeRecipeView crv WHERE CoffeeID = ?";
 
     @Override
     public List<Coffee> getAll() {
@@ -33,10 +39,10 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public Coffee getCoffeeById(int id) {
-        String queryById ="SELECT * FROM CoffeeRecipeView crv " +
-                         "WHERE  CoffeeID = " + id;
-        List<Coffee> coffees = jdbcTemplate.query(queryById, new CoffeeRowMapper());
-        return getTagsAndIngredients(coffees).get(0);
+//        String queryById ="SELECT * FROM CoffeeRecipeView crv " +
+//                         "WHERE  CoffeeID = " + id;
+        Coffee coffees = jdbcTemplate.queryForObject(GET_SINGLE_COFFEE, new CoffeeRowMapper(), new Object[] {id});
+        return coffees;
 
     }
 
@@ -118,16 +124,30 @@ public class CoffeeRepository implements ICoffeeRepository {
 
     @Override
     public List<Coffee> getByDifficulty(int level) {
-        return null;
+        List<Coffee> coffees = jdbcTemplate.query(GET_COFFEE_DIFFICULTIES, new CoffeeRowMapper(), level);
+
+        for( int i = 0; i < coffees.size(); i++){
+            int coffeeId = coffees.get(i).getCoffeeID();
+
+            List<Tag> tags = jdbcTemplate.query(GET_COFFEE_TAGS_QUERY, new TagRowMapper(), new Object[] {coffeeId});
+            List<Ingredient> ingredients = jdbcTemplate.query(GET_COFFEE_INGREDIENTS_QUERY,new IngredientRowMapper(), new Object[] {coffeeId});
+
+            coffees.get(i).setTags(tags);
+            coffees.get(i).getRecipe().setIngredients(ingredients);
+        }
+
+        return coffees;
     }
 
     @Override
     public void updateRating(int coffeeId, int rating) {
-
+        jdbcTemplate.update(UPDATE_COFFEE_RATING, rating, coffeeId);
+        int avgRating = jdbcTemplate.query(AVERAGE_RATING, (rs) -> {rs.next(); return rs.getInt("rating");}, new Object[] {coffeeId});
+        jdbcTemplate.update(UPDATE_AVG_RATING, avgRating, coffeeId);
     }
 
     @Override
-    public List<Coffee> getAll(String sort_key, String order) {
-        return null;
+    public void newRating(String userId, int coffeeId, int rating) {
+        jdbcTemplate.update(NEW_RATING, userId, coffeeId, rating, rating);
     }
 }

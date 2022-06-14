@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "app.datasource.main.jdbc-url",
+  "type": "java.lang.String",
+  "description": "A description for 'app.datasource.main.jdbc-url'"
+}]}

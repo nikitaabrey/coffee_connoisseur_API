@@ -4,7 +4,11 @@ import java.util.List;
 
 public class Coffee {
 
+    // coffee model
+
+
     private Recipe recipe;
+
     private int CoffeeID;
     private String name;
     private String description;
