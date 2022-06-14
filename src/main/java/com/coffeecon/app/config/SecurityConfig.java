@@ -22,7 +22,17 @@ public class SecurityConfig  {
 
         http.cors().and().csrf().disable()
                 .authorizeRequests(authz ->
-                        authz.antMatchers("/register","/otp/resend","/login","/otp/confirmation")
+                        authz.antMatchers("/register","/otp/resend","/login","/otp/confirmation",
+                                        "/v2/api-docs",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui.html",
+                                        "/webjars/**",
+                                        // -- Swagger UI v3 (OpenAPI)
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**","/")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

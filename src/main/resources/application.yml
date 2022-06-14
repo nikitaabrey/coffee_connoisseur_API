@@ -18,13 +18,16 @@ app:
       readTimeout: 2000
       jwk: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qc0pLUmCC/.well-known/jwks.json
 
+
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qc0pLUmCC
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
@@ -37,7 +40,7 @@ logging:
       example : DEBUG
 server:
   ssl:
-    key-store: device.p12
+    key-store: classpath:device.p12
     key-store-password: coffeecon
     key-store-type: pkcs12
   port: 443
