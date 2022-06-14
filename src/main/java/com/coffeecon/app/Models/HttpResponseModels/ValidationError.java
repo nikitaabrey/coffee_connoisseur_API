@@ -1,4 +1,4 @@
-package com.coffeecon.app.Response;
+package com.coffeecon.app.Models.HttpResponseModels;
 
 public class ValidationError implements Error {
 

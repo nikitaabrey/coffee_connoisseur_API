@@ -36,12 +36,6 @@ public class CoffeeController {
     public ResponseEntity<Coffee> test() {
 
 
-
-
-
-
-
-
         Ingredient ingredient1 = new Ingredient(1,"milk","400","ml");
         Ingredient ingredient2 = new Ingredient(2,"sugar","2","tsp");
 

@@ -1,4 +1,4 @@
-package com.coffeecon.app.Response;
+package com.coffeecon.app.Models.HttpResponseModels;
 
 import com.coffeecon.app.Utilities.NullObjectSerializer;
 import com.coffeecon.app.Utilities.NullStringSerializer;

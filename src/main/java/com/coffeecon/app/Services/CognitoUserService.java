@@ -2,10 +2,7 @@ package com.coffeecon.app.Services;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.model.*;
-import com.coffeecon.app.Models.CognitoAuthToken;
-import com.coffeecon.app.Models.ConfirmRegistrationDTO;
-import com.coffeecon.app.Models.LoginRequestDTO;
-import com.coffeecon.app.Models.RegisterRequestDTO;
+import com.coffeecon.app.Models.AuthModels.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -84,16 +81,19 @@ public class CognitoUserService {
         cognitoClient.signUp(signUpRequest);
     }
 
-    public ConfirmSignUpResult confirmSignUp(ConfirmRegistrationDTO confirmation) {
+    public void confirmSignUp(ConfirmRegistrationDTO confirmation) {
         ConfirmSignUpRequest confirmSignUpRequest = new ConfirmSignUpRequest()
                 .withClientId(clientId)
                 .withUsername(confirmation.getUsername())
                 .withConfirmationCode(confirmation.getConfirmationCode());
-        return cognitoClient.confirmSignUp(confirmSignUpRequest);
+         cognitoClient.confirmSignUp(confirmSignUpRequest);
     }
 
 
-    public void resendOtp() {
-
+    public void resendOtp(ResendOTPRequestDTO resend_req) {
+            ResendConfirmationCodeRequest request = new ResendConfirmationCodeRequest()
+                    .withClientId(clientId)
+                            .withUsername(resend_req.getUsername());
+            cognitoClient.resendConfirmationCode(request);
     }
 }

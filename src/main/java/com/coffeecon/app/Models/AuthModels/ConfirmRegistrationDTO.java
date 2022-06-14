@@ -1,4 +1,4 @@
-package com.coffeecon.app.Models;
+package com.coffeecon.app.Models.AuthModels;
 
 import javax.validation.constraints.Pattern;
 
@@ -7,7 +7,7 @@ public class ConfirmRegistrationDTO {
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Invalid username, username must contain alphanumeric characters only")
     private String username;
 
-    @Pattern(regexp = "^[0-9]+$", message = "Invalid confirmation code")
+    @Pattern(regexp = "^[0-9]+$", message = "Invalid  OTP")
     private String confirmationCode;
 
     public ConfirmRegistrationDTO(String username, String confirmationCode) {

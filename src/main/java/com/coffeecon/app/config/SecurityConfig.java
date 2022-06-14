@@ -10,6 +10,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
 
 
+    @Autowired
+    private JwtAuthEntry jwtAuthenticationEntryPoint;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -19,15 +22,13 @@ public class SecurityConfig  {
 
         http.cors().and().csrf().disable()
                 .authorizeRequests(authz ->
-                        authz.antMatchers("/register","/confirm","/login")
+                        authz.antMatchers("/register","/otp/resend","/login","/otp/confirmation")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
 
-                .oauth2ResourceServer().jwt();
+                .oauth2ResourceServer().authenticationEntryPoint(jwtAuthenticationEntryPoint).jwt();
         http.requiresChannel().anyRequest().requiresSecure();
-
-
 
 
         return http.build();

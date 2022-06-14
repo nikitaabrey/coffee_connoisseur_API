@@ -1,4 +1,4 @@
-package com.coffeecon.app.Models;
+package com.coffeecon.app.Models.AuthModels;
 
 public class CognitoAuthToken {
 

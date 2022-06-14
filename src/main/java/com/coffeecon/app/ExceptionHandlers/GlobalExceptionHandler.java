@@ -1,21 +1,28 @@
 package com.coffeecon.app.ExceptionHandlers;
 
 import com.amazonaws.services.cognitoidp.model.*;
-import com.coffeecon.app.Response.Error;
-import com.coffeecon.app.Response.HttpFailure;
-import com.coffeecon.app.Response.ValidationError;
+import com.amazonaws.services.xray.model.Http;
+import com.coffeecon.app.Models.HttpResponseModels.Error;
+import com.coffeecon.app.Models.HttpResponseModels.HttpFailure;
+import com.coffeecon.app.Models.HttpResponseModels.ValidationError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.www.NonceExpiredException;
 import org.springframework.util.MimeType;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -170,6 +177,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     /**
+     * invalid hwt token
+     * @param ex
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(RuntimeException ex, WebRequest request) {
+        return new HttpFailure.Builder(HttpStatus.UNAUTHORIZED)
+                .withMessage("Unauthorised")
+                .build();
+    }
+
+    /**
      * handle any unexpected error with cognito
      * @param ex
      * @return
@@ -263,6 +283,50 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+            String message = "Error writing JSON output";
+            return new HttpFailure.Builder(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .withMessage(message)
+                    .build();
+    }
 
 
+
+    /**
+     * missing servlet request
+     * @param ex
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String message = ex.getParameterName() + " parameter is missing";
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage(message)
+                .build();
+    }
+
+
+
+    /**
+     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
+     *
+     * @param ex the ConstraintViolationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(
+            javax.validation.ConstraintViolationException ex) {
+        return new HttpFailure.Builder(HttpStatus.BAD_REQUEST)
+                .withMessage("Validation error")
+                .withErrors(ex.getConstraintViolations().stream().map(errors -> {
+                return new ValidationError(errors.getRootBeanClass().getSimpleName(),errors.getMessage());
+                }).collect(Collectors.toList()))
+                .build();
+    }
 }
