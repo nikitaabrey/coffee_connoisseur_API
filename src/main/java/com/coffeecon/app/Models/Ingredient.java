@@ -1,6 +1,7 @@
 package com.coffeecon.app.Models;
 
 public class Ingredient {
+
     private int IngredientID;
     private String name;
     private String Quantity;

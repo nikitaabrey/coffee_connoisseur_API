@@ -1,6 +1,5 @@
 package com.coffeecon.app.controllers;
 
-import com.amazonaws.Response;
 import com.coffeecon.app.Models.Coffee;
 import com.coffeecon.app.Models.Ingredient;
 import com.coffeecon.app.Models.Recipe;
@@ -8,66 +7,73 @@ import com.coffeecon.app.Services.CoffeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 /**
  * This class will contain the endpoints for coffees
  */
+@RequestMapping ("/coffees")
 @RestController
 public class CoffeeController {
 
 
     @Autowired
-    private CoffeeService service;
+    private CoffeeService coffeeService;
 
-    @RequestMapping(value="/example", method = RequestMethod.GET)
-    public ResponseEntity<Coffee> test() {
 
-        Ingredient ingredient1 = new Ingredient(1,"milk","400","ml");
-        Ingredient ingredient2 = new Ingredient(2,"sugar","2","tsp");
 
-        Recipe recipe = new Recipe(1,"Expresso","add milk and expresso with sugar","Stir well", 2.5,3,new ArrayList<Ingredient>() {
-            {
-                add(ingredient1);
-                add(ingredient2);
-            }
-        });
 
-        List<String> tags = new ArrayList<String>() {{
-            add("dark roast");
-            add("floral");
-        }};
 
-        Coffee coffee = new Coffee(recipe,1,"expresso","this is an expresso",3, tags);
-        return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
+
+    @RequestMapping (value="",method = RequestMethod.GET)
+    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") String  tags, @RequestParam (defaultValue="none") String ingredients ,
+                                                                       @RequestParam (defaultValue="none")String sort_key ,
+                                                                       @RequestParam (defaultValue="none") String order) {
+        List<Coffee> coffees= null;
+        if (!tags.equals("none")) {
+            coffees = coffeeService.getCoffeesByTags(Arrays.asList(tags.split(",")), sort_key, order);
+        }
+        else if (!ingredients.equals("none")){
+            coffees= coffeeService.getCoffeesByIngredients(Arrays.asList(ingredients.split(",")), sort_key, order);
+        }
+
+        if (tags.equals("none") && ingredients.equals("none")){
+            coffees = coffeeService.getCoffees();
+        }
+
+        return new HttpSuccess.Builder<List<Coffee>>(HttpStatus.OK)
+                .withBody(coffees).build();
     }
 
     @RequestMapping(value="/coffee", method = RequestMethod.GET)
     public ResponseEntity<?> getCoffees() {
 
-        List<Coffee> coffees = service.getCoffees();
+        List<Coffee> coffees = coffeeService.getCoffees();
         return new ResponseEntity<>(coffees,HttpStatus.OK);
     }
 
-    @RequestMapping(value="/coffees", method = RequestMethod.GET)
+    @RequestMapping(value="", method = RequestMethod.GET)
     public ResponseEntity<?> getCoffeeDifficulty(@RequestParam int level) {
-        List<Coffee> coffees = service.getCoffeeByDifficulty(level);
+        List<Coffee> coffees = coffeeService.getCoffeeByDifficulty(level);
         return new ResponseEntity<>(coffees, HttpStatus.OK);
     }
 
-    @PutMapping(value="/coffees/updateRating")
+    @PutMapping(value="")
     public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
-        service.updateCoffeeRating(coffeeId, rating);
+        coffeeService.updateCoffeeRating(coffeeId, rating);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value="/coffees/newRating")
+    @PostMapping(value="")
     public ResponseEntity<?> newCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
-        service.newCoffeeRating(coffeeId, rating);
+        coffeeService.newCoffeeRating(coffeeId, rating);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

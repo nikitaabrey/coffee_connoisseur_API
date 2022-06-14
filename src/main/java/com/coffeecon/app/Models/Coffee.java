@@ -4,31 +4,35 @@ import java.util.List;
 
 public class Coffee {
 
+    // coffee model
+
+
     private Recipe recipe;
+
     private int CoffeeID;
-    private String Name;
+    private String name;
     private String description;
-    private int Rating;
-    private List<String> tags;
+    private int rating;
+    private List<Tag> tags;
 
     public Coffee() {
 
     }
 
-    public Coffee(Recipe recipe, int coffeeID, String name, String description, int rating,List<String> tags) {
+    public Coffee(Recipe recipe, int coffeeID, String name, String description, int rating, List<Tag> tags) {
         this.recipe = recipe;
         this.CoffeeID = coffeeID;
-        this.Name = name;
+        this.name = name;
         this.description = description;
-        this.Rating = rating;
-        this.tags = tags;
+        this.rating = rating;
+        // this.tags = tags;
     }
 
     public Coffee(Recipe recipe, String name, String description, int rating) {
         this.recipe = recipe;
-        this.Name = name;
+        this.name = name;
         this.description = description;
-        this.Rating = rating;
+        this.rating = rating;
     }
 
     public Recipe getRecipe() {
@@ -48,11 +52,11 @@ public class Coffee {
     }
 
     public String getName() {
-        return Name;
+        return this.name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getDescription() {
@@ -64,18 +68,19 @@ public class Coffee {
     }
 
     public int getRating() {
-        return Rating;
+        return this.rating;
     }
 
     public void setRating(int rating) {
-        Rating = rating;
+        this.rating = rating;
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
+
 }

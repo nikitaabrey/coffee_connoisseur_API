@@ -1,6 +1,6 @@
 CREATE TABLE  Difficulty (
 	DifficultyID INT NOT NULL,
-	DifficultyLevel VARCHAR(250) NOT NULL,
+	Level VARCHAR(255) NOT NULL,
 	PRIMARY KEY(DifficultyID)
 );
 
@@ -9,7 +9,7 @@ CREATE TABLE Recipe (
   DifficultyID INT NULL,
 	Name VARCHAR(150) NOT NULL,
 	Description VARCHAR(255),
-	Instructions VARCHAR(255),
+	Instructions VARCHAR(1200),
 	PrepTime FLOAT,
   PRIMARY KEY(RecipeID),
 	FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID)
@@ -43,7 +43,7 @@ CREATE TABLE  CoffeeTag (
 
 CREATE TABLE Unit (
   UnitID INT NOT NULL,
-  UnitName INT NOT NULL, 
+  Name VARCHAR(10) NOT NULL,
   PRIMARY KEY(UnitID)
 );
 
@@ -56,9 +56,18 @@ CREATE TABLE Ingredient (
 CREATE TABLE RecipeIngredient (
   RecipeID INT NOT NULL,
   IngredientID INT NOT NULL,
-  UnitID INT NOT NULL,
+  UnitID INT,
   Quantity VARCHAR(120),
   CONSTRAINT PK_RecipeIngredient PRIMARY KEY (RecipeID, IngredientID),
   FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID),
   FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
+);
+
+CREATE TABLE CoffeeRating
+(
+    UserID VARCHAR(100) NOT NULL,
+    CoffeeID INT NOT NULL,
+    LastRating INT NOT NULL,
+    CONSTRAINT  PRIMARY KEY (CoffeeID,UserID ),
+    FOREIGN KEY (CoffeeID) REFERENCES Coffee (CoffeeID)
 );
