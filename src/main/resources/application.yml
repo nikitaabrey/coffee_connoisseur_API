@@ -1,0 +1,43 @@
+app:
+  datasource:
+    main:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: 'jdbc:mysql://coffeecon.cuptqaxjh10z.af-south-1.rds.amazonaws.com:3306/coffeecon'
+      username: 'admin'
+      password: 'coffeecon'
+      pool-size: 30
+  aws:
+    access_key: 'AKIA555TREXHX4REMDEN'
+    secret_key: '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'
+    region: 'us-east-1'
+    cognito:
+      clientId: '644dungoqnughbb6q4a9pdnsst'
+      userPoolId: 'us-east-1_qc0pLUmCC'
+      region: 'us-east-1'
+      connectionTimeout: 2000
+      readTimeout: 2000
+      jwk: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qc0pLUmCC/.well-known/jwks.json
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qc0pLUmCC
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
+    com:
+      example : DEBUG
+server:
+  ssl:
+    key-store: device.p12
+    key-store-password: coffeecon
+    key-store-type: pkcs12
+  port: 443
