@@ -1,24 +1,14 @@
 package com.coffeecon.app.Models;
 
-
 import java.util.List;
-import lombok.Data;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-
-
-@Data
 public class Coffee {
 
     private Recipe recipe;
-    @Id
     private int CoffeeID;
     private String name;
     private String description;
     private int rating;
-    @MappedCollection(idColumn = "CoffeeID")
-    // private List<TagRef> tags;
     private List<Tag> tags;
 
     public Coffee() {
@@ -88,11 +78,5 @@ public class Coffee {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
-    // public void addTag(Tag tag) {
-    //     // new TagRef()
-	// 	this.tags.add(new TagRef(tag.getTagId()));
-	// }
-
 
 }

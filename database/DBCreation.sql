@@ -62,3 +62,12 @@ CREATE TABLE RecipeIngredient (
   FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID),
   FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
 );
+
+CREATE TABLE CoffeeRating
+(
+    UserID VARCHAR(100) NOT NULL,
+    CoffeeID INT NOT NULL,
+    LastRating INT NOT NULL,
+    CONSTRAINT  PRIMARY KEY (CoffeeID,UserID ),
+    FOREIGN KEY (CoffeeID) REFERENCES Coffee (CoffeeID)
+);
