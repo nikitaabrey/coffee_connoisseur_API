@@ -58,7 +58,7 @@ public class CoffeeController {
     }
 
     @PutMapping(value="")
-    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam int rating) {
+    public ResponseEntity<?> updateCoffeeRating(@RequestParam int coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") int rating) {
         coffeeService.updateCoffeeRating(coffeeId, rating);
         return new ResponseEntity<>(HttpStatus.OK);
     }
