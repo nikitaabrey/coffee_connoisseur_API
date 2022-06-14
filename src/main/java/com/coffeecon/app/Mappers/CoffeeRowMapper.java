@@ -1,38 +1,34 @@
 package com.coffeecon.app.Mappers;
 
-import com.coffeecon.app.Models.Coffee;
-import com.coffeecon.app.Models.Ingredient;
-import com.coffeecon.app.Models.Recipe;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.coffeecon.app.Models.Coffee;
+import com.coffeecon.app.Models.Recipe;
 
 public class CoffeeRowMapper implements RowMapper<Coffee> {
+
     @Override
-    public Coffee mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Coffee coffee = new Coffee();
-        coffee.setCoffeeID(rs.getInt("c.CoffeeID"));
-        coffee.setName(rs.getString("Name"));
-        coffee.setDescription(rs.getString("Description"));
-        coffee.setRating(rs.getInt("Rating"));
+	public Coffee mapRow(ResultSet rs, int rowNum) throws SQLException {        
 
-        Recipe recipe = new Recipe ();
+        Recipe recipe = new Recipe();
         recipe.setRecipeID(rs.getInt("RecipeID"));
-        recipe.setName(rs.getString("r.Name"));
-        recipe.setInstructions(rs.getString("r.Instructions"));
-        recipe.setPrepTime(rs.getInt("r.PrepTime"));
-        recipe.setDifficulty(rs.getInt("d.Level"));
+        recipe.setName(rs.getString("RecipeName"));
+        recipe.setInstructions(rs.getString("Instructions"));
+        recipe.setDescription(rs.getString("RecipeDescription"));
+        recipe.setPrepTime(rs.getDouble("PrepTime"));
+        recipe.setDifficulty(rs.getInt("Difficulty"));
+        
 
-        //Ingredient ingredient= new Ingredient(rs.getInt("IngredientID"), rs.getString("i.Name"),
-        //rs.getString("Quantity"),rs.getString("UnitID"));
-        // List<Ingredient>ingredientList= new  ArrayList<Ingredient>();
-        //ingredientList.add(ingredient);
-       // recipe.setIngredients(ingredientList);
+		Coffee coffee = new Coffee();
+		coffee.setCoffeeID(rs.getInt("CoffeeID"));
         coffee.setRecipe(recipe);
-        return coffee;
-    }
+		coffee.setName(rs.getString("Name"));
+		coffee.setDescription(rs.getString("Description"));
+		coffee.setRating(rs.getInt("Rating"));
+
+		return coffee;
+	}
 }

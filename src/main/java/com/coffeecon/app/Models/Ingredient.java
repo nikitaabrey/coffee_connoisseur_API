@@ -1,18 +1,15 @@
 package com.coffeecon.app.Models;
 
 public class Ingredient {
+
     private int IngredientID;
     private String name;
     private String Quantity;
     private String Unit;
 
-
-
-
     public Ingredient() {
 
     }
-
 
     public Ingredient(int IngredientID,String name, String quantity, String unit) {
         this.name = name;
@@ -22,15 +19,11 @@ public class Ingredient {
 
     }
 
-
-
     public Ingredient(String name, String quantity, String unit) {
         this.name = name;
         this.Quantity = quantity;
         this.Unit = unit;
     }
-
-
 
     public int getIngredientID() {
         return IngredientID;
