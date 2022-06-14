@@ -23,7 +23,7 @@ public class CoffeeRepository implements ICoffeeRepository {
     private final String UPDATE_AVG_RATING = "UPDATE Coffee SET Rating = ? WHERE CoffeeID = ?";
     private final String AVERAGE_RATING = "SELECT AVG(LastRating) AS rating FROM CoffeeRating WHERE CoffeeID = ?";
     private final String NEW_RATING = "INSERT INTO CoffeeRating (UserID, CoffeeID, LastRating) VALUES ('?', ?, ?) ON DUPLICATE KEY UPDATE LastRating = ?";
-    
+
     @Override
     public List<Coffee> getAll() {
         List<Coffee> coffees = jdbcTemplate.query(GET_COFFEES_QUERY, new CoffeeRowMapper());
