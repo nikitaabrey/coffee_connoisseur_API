@@ -1,57 +1,102 @@
 package com.coffeecon.app.controllers;
 
+import com.coffeecon.app.Assemblers.CoffeeModelAssembler;
 import com.coffeecon.app.Models.Coffee;
-import com.coffeecon.app.Models.Ingredient;
-import com.coffeecon.app.Models.Recipe;
+import com.coffeecon.app.Models.HttpResponseModels.HttpSuccess;
 import com.coffeecon.app.Services.CoffeeService;
+import com.coffeecon.app.Utilities.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.constraints.Pattern;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
  * This class will contain the endpoints for coffees
  */
+@RequestMapping ("/coffees")
 @RestController
+@Validated
 public class CoffeeController {
 
-
     @Autowired
-    private CoffeeService service;
+    private CoffeeService coffeeService;
+    @Autowired
+    private CoffeeModelAssembler coffeeAssembler;
 
-    @RequestMapping(value="/example", method = RequestMethod.GET)
-    public ResponseEntity<Coffee> test() {
+    @GetMapping()
+    @Operation(summary = "Get coffees by tags or ingredients, with option to sort and filter", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<Object>  getCoffeesbyTagsOrIngredients (@RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String tags,
+                                                                  @RequestParam (defaultValue="none") @Pattern(regexp = "([a-zA-Z]+'?[a-zA-Z]+,?)+") String ingredients ,
+                                                                  @RequestParam (defaultValue="none")  @Pattern(regexp = "^(difficulty|rating|none)$") String sort_key ,
+                                                                  @RequestParam (defaultValue="none") @Pattern(regexp = "^(desc|asc|none)$") String order,
+                                                                  @RequestParam (defaultValue = "none") @Pattern(regexp = "^(1|2|3|4|5|none)$") String level) {
 
-        Ingredient ingredient1 = new Ingredient(1,"milk","400","ml");
-        Ingredient ingredient2 = new Ingredient(2,"sugar","2","tsp");
+        List<Coffee> coffees= null;
 
-        Recipe recipe = new Recipe(1,"Expresso","add milk and expresso with sugar",2.5,3,new ArrayList<Ingredient>() {
-            {
-                add(ingredient1);
-                add(ingredient2);
-            }
-        });
+        if (tags.equals("none") && ingredients.equals("none") && level.equals("none")){
+            coffees = coffeeService.getCoffees();
+        }
 
-        List<String> tags = new ArrayList<String>() {{
-            add("dark roast");
-            add("floral");
-        }};
+        if (!tags.equals("none")) {
+            coffees = coffeeService.getCoffeesByTags(Arrays.asList(tags.split(",")), sort_key, order);
+        }
+        else if (!ingredients.equals("none")){
+            coffees= coffeeService.getCoffeesByIngredients(Arrays.asList(ingredients.split(",")), sort_key, order);
+        }
+        else if (!level.equals("none")) {
+            coffees = coffeeService.getCoffeeByDifficulty(Integer.parseInt(level));
+        }
 
-        Coffee coffee = new Coffee(recipe,1,"expresso","this is an expresso",3, tags);
+        List<EntityModel<Coffee>> coffeeEntityModels = coffees.stream()
+            .map(coffeeAssembler::toModel)
+            .collect(Collectors.toList());
+        CollectionModel<EntityModel<Coffee>> collectionModel = CollectionModel.of(coffeeEntityModels,
+            linkTo(methodOn(CoffeeController.class).getCoffeesbyTagsOrIngredients(tags,ingredients,sort_key,order,level)).withSelfRel());
 
-  ;
-        return new ResponseEntity<Coffee>(coffee, HttpStatus.OK);
+        return new HttpSuccess.Builder<CollectionModel<EntityModel<Coffee>>>(HttpStatus.OK)
+                .withBody(collectionModel).build();
+    }
+
+    @PutMapping()
+    @Operation(summary = "Update a coffee rating", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<?> updateCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
+
+        coffeeService.updateCoffeeRating(Integer.parseInt(coffeeId), Integer.parseInt(rating));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping()
+    @Operation(summary = "add a new coffee rating", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<?> newCoffeeRating(@RequestParam @Pattern(regexp = "^[0-9]+$") String coffeeId, @RequestParam @Pattern(regexp = "^(1|2|3|4|5)$") String rating) {
+
+        JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String username = JwtUtils.getUser(token);
+        coffeeService.newCoffeeRating(username,Integer.parseInt(coffeeId), Integer.parseInt(rating));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}") @Operation(summary = "Get a single coffee by id", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<Object> selectCoffeeById(@PathVariable (value="id") Integer id) {
+        
+        Coffee coffee = coffeeService.getCoffeeById(id);
+        EntityModel<Coffee> entityModel = coffeeAssembler.toModel(coffee);
+        return new HttpSuccess.Builder<EntityModel<Coffee>>(HttpStatus.OK)
+                .withBody(entityModel).build();
     }
 
 }
-
-
-
-

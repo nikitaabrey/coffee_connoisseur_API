@@ -12,7 +12,7 @@ public interface ICoffeeRepository {
      * @param order the sort order ie ascending or descending
      * @return list off all coffees
      */
-    public List<Coffee> getAll(String sort_key, String order);
+    public List<Coffee> getAll();
 
     /**
      * get a coffee by id
@@ -20,7 +20,6 @@ public interface ICoffeeRepository {
      * @return the coffee
      */
     public Coffee getCoffeeById(int id);
-
 
     /**
      * get coffees with given tags
@@ -40,14 +39,12 @@ public interface ICoffeeRepository {
      */
     public List<Coffee> getByIngredients(List<String> ingredients, String sort_key, String order);
 
-
     /**
      * get all coffes of a certain difficulty
      * @param level
      * @return
      */
     public List<Coffee> getByDifficulty(int level);
-
 
     /**
      * update a coffee rating
@@ -56,5 +53,10 @@ public interface ICoffeeRepository {
      */
     public void updateRating(int coffeeId, int rating);
 
-
+    /**
+     * create a new coffee rating
+     * @param coffeeId the coffee to rate
+     * @param rating the rating value
+     */
+    public void newRating(String userId, int coffeeId, int rating);
 }
